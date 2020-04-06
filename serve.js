@@ -12,8 +12,11 @@ app.use(
   })
 );
 
-const port = 8000;
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
 
-app.listen(port, "localhost");
+app.listen(8000, function () {
+  console.log('Example app listening on port 8000!')
+})
 
-console.log("listening on port :", port);
