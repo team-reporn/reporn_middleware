@@ -17,4 +17,4 @@ Install packages :
     
 ## Launch the project
 
-    server index.js
+    node serve.js
