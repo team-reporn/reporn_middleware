@@ -1,5 +1,8 @@
 const { GraphQLServer } = require("graphql-yoga");
-const fetch = require("node-fetch");
+const Query = require("./resolvers/Query");
+const Mutation = require("./resolvers/Mutation");
+const User = require("./resolvers/User");
+
 // 1
 let links = [
   {
@@ -14,40 +17,22 @@ let idCount = 0;
 const resolvers = {
   Query: {
     info: () => `This is the API of a Gobelin DMII group project `,
-    // 2
-    users: () =>
-      fetch(url + "users")
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(res);
-          return res;
-        }),
+    ...Query,
   },
   Mutation: {
-    // 2
-    post: (parent, args) => {
-      const body = `{
-      	"email": "${args.email}",
-      	"login": "${args.login}",
-      	"password": "${args.password}"
-      }`;
-      return fetch(url + "users", {
-        method: "POST",
-        body,
-        headers: { "Content-Type": "application/json" },
-      })
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(res);
-          return res;
-        });
-    },
+    ...Mutation,
   },
+  // User,
 };
 // 3
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
   resolvers,
+  context: (request) => {
+    return {
+      ...request,
+    };
+  },
 });
 
 server.start(() => console.log(`Server is running on http://localhost:400`));
