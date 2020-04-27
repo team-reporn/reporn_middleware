@@ -30,7 +30,7 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-const url = "http://127.0.0.1:8080/api/users";
+const url = "http://api.reporn.remiruc.com/api/users";
 
 module.exports = new GraphQLSchema({
   query: new GraphQLObjectType({
