@@ -5,16 +5,16 @@ module.exports = (io) => {
       console.log(`user nous dit ${data}`);
     });
     socket.on("create or join", (roomId) => {
+      console.log("meg", socket.room);
+      if (!roomId) {
+        console.log("no room id");
+        roomId = socket.room;
+      }
       socket.leave(socket.room);
       socket.join(roomId);
+
       const numClients = io.sockets.adapter.rooms[roomId].length;
       console.log(`${numClients} clients connected in room ${roomId}`);
-      if (numClients > 2) {
-        // Trying to join a full room
-        socket.leave(roomId);
-        socket.emit("full room", roomId);
-        return;
-      }
       if (numClients === 1) {
         // eslint-disable-next-line no-param-reassign
         socket.username = "host";
@@ -24,6 +24,15 @@ module.exports = (io) => {
         // eslint-disable-next-line no-param-reassign
         socket.username = "client";
         socket.emit("joined", roomId);
+      }
+    });
+    let readyCount = 0;
+    socket.on("ready", () => {
+      // console.log(io.sockets.adapter.rooms);
+      readyCount++;
+      console.log("user seems ready");
+      if (readyCount === io.sockets.adapter.rooms[socket.room].length) {
+        socket.emit("everyone is ready", true);
       }
     });
 
