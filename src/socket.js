@@ -75,12 +75,12 @@ module.exports = (io) => {
         console.log("No room found for this id");
       }
     });
-    socket.on("update game info", (roomId)=>{
+    socket.on("update game info", () => {
       let roomId = Object.values(socket.rooms)[1];
-      if(io.of("/").in(roomId).game){
-        socket.emit("game info", io.of("/").in(roomId).game)
+      if (io.of("/").in(roomId).game) {
+        socket.emit("game info", io.of("/").in(roomId).game);
       }
-    })
+    });
     socket.on("update room info", (roomId) => {
       if (io.sockets.adapter.rooms[roomId]) {
         const numClients = io.sockets.adapter.rooms[roomId].length;
@@ -131,7 +131,8 @@ module.exports = (io) => {
             });
             io.of("/").in(roomId).game = new Game({ sockets: socketList });
             io.of("/").in(roomId).game.initialize();
-            io.to(socket.room).emit(
+
+            io.to(roomId).emit(
               "game start",
               io.of("/").in(roomId).game.getPlayerById({ id: socket.id })
             );
@@ -140,11 +141,18 @@ module.exports = (io) => {
     });
     socket.on("ready", () => {
       // console.log(io.sockets.adapter.rooms);
+      let roomId = Object.values(socket.rooms)[1];
       readyCount++;
       console.log("user seems ready");
-      if (readyCount === io.sockets.adapter.rooms[socket.room].length) {
-        socket.emit("everyone is ready", true);
-      }
+      io.of("/")
+        .in(roomId)
+        .clients((error, clients) => {
+          if (error) throw error;
+          if (readyCount === clients.length) {
+            io.of("/").in(roomId).emit("everyone is ready", true);
+            readyCount = 0;
+          }
+        });
     });
 
     // Called when a user closes the connection

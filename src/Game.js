@@ -5,6 +5,7 @@ let cardsRoles = {
 };
 
 let themes = ["amateur", "bbc", "lesbian"];
+let games = ["cultureQ", "tabou ", "acteurX", "ouEst"];
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -12,13 +13,14 @@ function getRandomInt(max) {
 
 module.exports = class Game {
   constructor({ sockets }) {
-    console.log(sockets);
     this.players = sockets.map((socket) => ({ id: socket.id })) || [];
     this.theme;
+    this.game;
   }
   initialize() {
     this.drawCards();
     this.chooseTheme();
+    this.chooseGame();
   }
   drawCards() {
     this.players.forEach((player) => {
@@ -33,9 +35,12 @@ module.exports = class Game {
   chooseTheme() {
     this.theme = themes[getRandomInt(themes.length)];
   }
-  getPlayerById = ({ id }) => {
+  chooseGame() {
+    this.game = games[getRandomInt(games.length)];
+  }
+  getPlayerById({ id }) {
     return this.players.filter((player) => {
       return player.id === id;
     })[0];
-  };
+  }
 };
