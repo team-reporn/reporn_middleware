@@ -4,6 +4,13 @@ let cardsRoles = {
   orientationS: ["straight", "be"],
 };
 
+let futur = [
+  "tu mérite de ne pas accepter les choses que tu ne veux pas",
+  "lorem ipsum dolor sit amet",
+  "lorem ipsum dolor sit amet",
+  "lorem ipsum dolor sit amet",
+];
+
 let themes = ["amateur", "bbc", "lesbian"];
 let games = ["cultureQ", "tabou ", "acteurX", "ouEst"];
 
@@ -18,7 +25,10 @@ module.exports = class Game {
     this.game;
   }
   initialize() {
+    //player values
     this.drawCards();
+    this.chooseFutur();
+    //game values
     this.chooseTheme();
     this.chooseGame();
   }
@@ -37,6 +47,11 @@ module.exports = class Game {
   }
   chooseGame() {
     this.game = games[getRandomInt(games.length)];
+  }
+  chooseFutur() {
+    this.players.forEach((player) => {
+      player.futur = futur[getRandomInt(futur.length)];
+    });
   }
   getPlayerById({ id }) {
     return this.players.filter((player) => {
