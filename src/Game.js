@@ -12,7 +12,8 @@ let futur = [
 ];
 
 let themes = ["amateur", "bbc", "lesbian"];
-let games = ["cultureQ", "tabou ", "acteurX", "ouEst"];
+let games = ["cultureQ", "tabou", "acteurX", "ouEst"];
+let chosenGames = [];
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
@@ -23,6 +24,7 @@ module.exports = class Game {
     this.players = sockets.map((socket) => ({ id: socket.id })) || [];
     this.theme;
     this.game;
+    this.round = { laps: 0 };
   }
   initialize() {
     //player values
@@ -46,7 +48,15 @@ module.exports = class Game {
     this.theme = themes[getRandomInt(themes.length)];
   }
   chooseGame() {
-    this.game = games[getRandomInt(games.length)];
+    this.round.laps++;
+    if (games.length < 1) {
+      games = chosenGames;
+      chosenGames = [];
+    }
+    let chosenGameIndex = getRandomInt(games.length);
+    this.game = games[chosenGameIndex];
+    chosenGames.push(games[chosenGameIndex]);
+    games.splice(chosenGameIndex, 1);
   }
   chooseFutur() {
     this.players.forEach((player) => {

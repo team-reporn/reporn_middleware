@@ -139,6 +139,11 @@ module.exports = (io) => {
           });
       }
     });
+    socket.on("change game", () => {
+      let roomId = Object.values(socket.rooms)[1];
+      io.of("/").in(roomId).game.chooseGame();
+      socket.emit("game info", io.of("/").in(roomId).game);
+    });
     socket.on("ready", () => {
       // console.log(io.sockets.adapter.rooms);
       let roomId = Object.values(socket.rooms)[1];
