@@ -27,6 +27,7 @@ module.exports = class Game {
     this.round = { laps: 0 };
   }
   initialize() {
+    games = ["cultureQ", "tabou", "acteurX", "ouEst"];
     //player values
     this.drawCards();
     this.chooseFutur();
@@ -53,10 +54,18 @@ module.exports = class Game {
       games = chosenGames;
       chosenGames = [];
     }
-    let chosenGameIndex = getRandomInt(games.length);
-    this.game = games[chosenGameIndex];
-    chosenGames.push(games[chosenGameIndex]);
-    games.splice(chosenGameIndex, 1);
+    // let chosenGameIndex = getRandomInt(games.length);
+    let chosenGameIndex = this.round.laps - 1;
+    console.log(chosenGameIndex);
+    if (chosenGameIndex < games.length) {
+      console.log("annuile");
+      this.game = games[chosenGameIndex];
+    } else {
+      console.log("gamers");
+      this.game = games[getRandomInt(games.length)];
+    }
+    // chosenGames.push(games[chosenGameIndex]);
+    // games.splice(chosenGameIndex, 1);
   }
   chooseFutur() {
     this.players.forEach((player) => {
