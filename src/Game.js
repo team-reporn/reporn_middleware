@@ -1,7 +1,7 @@
 let cardsRoles = {
-  genre: ["h", "f", "nb"],
-  job: ["plumber", "nurse"],
-  orientationS: ["straight", "be"],
+  genre: ["f", "h"],
+  job: ["Plombier.e", "Masseur.se"],
+  orientationS: ["Hétérosexuelle", "Homosexuelle"],
 };
 
 let futur = [
@@ -11,7 +11,7 @@ let futur = [
   "lorem ipsum dolor sit amet",
 ];
 
-let themes = ["amateur", "bbc", "lesbian"];
+let themes = ["amateur"];
 let games = ["cultureQ", "tabou", "acteurX", "ouEst"];
 let chosenGames = [];
 
